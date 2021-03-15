@@ -1,0 +1,22 @@
+.Navbar {
+    width: 100%;
+    height: 70px;
+    background-color: blue;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+
+.Navbar a {
+    font-size: 20px;
+    margin: 10px;
+    text-decoration: none;
+    color: white;
+    
+
+}
+.Navbar a:hover {
+    cursor: pointer;
+
+}
