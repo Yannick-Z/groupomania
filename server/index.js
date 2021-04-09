@@ -1,24 +1,24 @@
+require("dotenv").config();
 const express = require ('express')
 const app = express()
-const mysql = require("mysql");
-const db = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'password',
-  database : 'socialmedia'
-});
+const cors = require('cors')
 
-
-
-app.get("/register", (req, res) => {
-    db.query(
-        "INSERT INTO Users (username, password) VALUES ('yannick', 'password');",
-        (err, results) => {
-            console.log(err);
-            res.send(results);
-        }
+app.use(
+    cors({
+        origin : ['http://localhost:3000'],
+        methods : ['GET', 'POST'],
+        credentials : true,
+    })
     );
-});
+app.use(express.json());
+
+
+
+
+const userRoute = require('./routes/User');
+app.use('/user', userRoute);
+const uploadRoute = require("./routes/Upload");
+app.use("/upload", uploadRoute);
 
 app.listen(3001, (req, res) => {
     console.log("server running");
