@@ -1,0 +1,65 @@
+.Profile {
+    width: 100%;
+    height: auto;
+    background-color: #bebdb761;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Profile .Post {
+    width: 600px;
+    height: 500px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.Profile .Post .Image {
+    flex: 70%;
+    
+}
+
+.Profile .Post .Image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-height: 400px;
+    
+}
+
+.Profile .Post .Content {
+    flex: 30%;
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+
+.Profile .Post .Content .title {
+    flex: 30%;
+    text-align: center;
+}
+.Profile .Post .Content .description {
+    flex: 70%;
+    text-align: center;
+}
+
+.Profile .Post .Engagement {
+    flex: 20%;
+    display: grid;
+    place-items: center;
+}
+
+.Home .Post .Engagement #likeButton {
+    font-size: 40px;
+    color:green;
+}
+
+.Home .Post .Engagement #likeButton:hover {
+    cursor: pointer;
+    color: black;
+}
+

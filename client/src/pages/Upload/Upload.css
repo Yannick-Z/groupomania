@@ -1,34 +1,31 @@
-.Register {
-    background-image: url('./images/fond.png');
+.Upload {
+    background-image: url('../Register/images/fond.png');
     background-repeat: no-repeat;
     background-position: top;
-    
-    
-    
     width: 100%;
     height: 750px;
-   
+    
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-   
 }
 
-.RegisterForm {
+.UploadForm {
     display: flex;
     flex-direction: column;
     opacity: 0.6;
 }
 
 
-.RegisterForm input,button {
+.UploadForm input,button {
     margin: 5px;
     width: 400px;
     height: 50px;
     font-size: 20px;
 }
 
-.RegisterForm button {
+.UploadForm button {
     cursor: pointer;
 }
