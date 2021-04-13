@@ -11,14 +11,16 @@ function Login() {
 
 const [errorMessage, setErrorMessage] = useState("");
 
-Axios.defaults.withCredentials = true;
+const [token] = useState("");
 
 let history = useHistory();
 
 
 
+
+
 const login = () => {
-    console.log(username);
+    
     Axios.post("http://localhost:3001/user/login",{
         username: username,
         password: password,
@@ -27,6 +29,9 @@ const login = () => {
         if (response.data.loggedIn) {
             localStorage.setItem("loggedIn", true);
             localStorage.setItem("username", response.data.username);
+            localStorage.setItem("id", response.data.id);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("role", response.data.role);
             history.push("/");
         } else {
             setErrorMessage(response.data.message);
@@ -36,13 +41,21 @@ const login = () => {
     });
 };
 
-useEffect(() => {
-    Axios.get('http://localhost:3001/login').then((response) => {
-        if (response.data.loggedIn === true) {
-            localStorage.setItem(response.data.user[0].username);
+ useEffect(() => {
+    Axios.post('http://localhost:3001/user/login',{
+      headers: {
+          Authorization : "Bearer "+localStorage.getItem(token)
+      },
+      body:{
+          id: localStorage.getItem(token)
+      }
+    }).then((response)=>{
+        if (response.data.loggedIn == true ) {
+            setErrorMessage(response.data.user[0].username);
         }
     });
-}, []);
+ }, []);
+
 
 return (
     <div className="Login">
@@ -61,7 +74,14 @@ return (
             <button onClick={login}>Login</button> 
             {errorMessage}               
         </div>
-    </div>
+
+             
+        </div>
+     
+    
+
+
+
 )
 }
 

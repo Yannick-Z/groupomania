@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./Home.css";
 import { Image } from 'cloudinary-react';
 import Axios from 'axios';
-import Admin from '../../components/Admin';
+
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 
 
@@ -10,20 +10,14 @@ function Home() {
 
     const [uploads, setUploads] = useState([]);
     const [likes, setLikes] = useState(0);
-    const [roles, setRoles] = useState("");
+    const [role, setRole] = useState("");
+    
     
     Axios.defaults.withCredentials = true;
-
-    useEffect (() => {
-        Axios.get('http://localhost:3001/user/login').then((response) => {
-            if (response.data.loggedIn == true) {
-                setRoles(response.data.user[0].roles);
-                console.log(response.data);
-            }
-        });
-    }, []);
     
-
+    
+   
+    
 
 
 
@@ -32,6 +26,17 @@ function Home() {
         if (!localStorage.getItem("loggedIn")) {
             localStorage.setItem("loggedIn", false);
         }
+    }, []);
+
+    
+    useEffect(() => {
+        Axios.get('http://localhost:3001/user/login').then((response)=>{
+            
+            if (response.data.loggedIn == true ) {
+                setRole(response.data.user[0].role);
+                console.log(response.data);
+            }
+        });
     }, []);
 
     useEffect(() => {
@@ -58,7 +63,7 @@ function Home() {
         });
     };
 
-    /* const deleteUploads= (id)=> {
+    /*const deleteUploads= (id)=> {
         Axios.delete(`http://localhost:3001/upload/delete/${id}`).then((response) => {
             setUploads(
                 uploads.filter((val) => {
@@ -72,8 +77,8 @@ function Home() {
 
     return (
         <div className="Home">
-            <h1>{roles}</h1>
-                
+            
+               <h1>{role}</h1>
             {uploads.map((val, key) => {
                 return (
                     <div className="Post">
@@ -105,11 +110,11 @@ function Home() {
 
                             />
                             {val.likes}
-
-                            {/*  <button onClick={(key)=> {deleteUploads(val.id);
+ 
+{/* {
+                              <button onClick={(key)=> {deleteUploads(val.id);
             }}
-            >Delete</button> */}
-
+            >Delete</button> } */}
                         </div>
                     </div>
                 );

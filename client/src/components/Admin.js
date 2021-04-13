@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 function Admin() {
     return (
         <div>
-            <h1>Admin Account</h1>
+            <h1>Admin</h1>
         </div>
     )
 }

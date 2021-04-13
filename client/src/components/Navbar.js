@@ -38,6 +38,7 @@ function Navbar() {
                    
                    
                    
+                   
                 </>
                
             ) : (
@@ -45,6 +46,8 @@ function Navbar() {
             
             <a href="/register">Register</a>
             <a href="/login">Login</a>
+            
+            
             
             
             </>
