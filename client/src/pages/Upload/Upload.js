@@ -24,7 +24,7 @@ function Upload() {
             
             const fileName = response.data.public_id;
             
-                Axios.post("http://localhost:3001/upload", { 
+                Axios.post("http://localhost:3001/upload", { //Permet de poster des publi, et est envoyé a la bdd
                     title: title, 
                     description: description, 
                     image: fileName,
@@ -35,13 +35,8 @@ function Upload() {
     
                 });
 
-           
-           
-
         });
-
-
-    };
+};
     return (
         <div className="Upload">
           <h1>Create a post</h1>
@@ -49,20 +44,20 @@ function Upload() {
                 <input 
                 type="text" 
                 placeholder="Title..."
-                 onChange= {(event) => {
+                onChange= {(event) => {
                     setTitle(event.target.value);
-                 }}
+                }}
                 />
                 <input 
                 type="text" 
                 placeholder="Description..."
-                 onChange= {(event) => {
+                onChange= {(event) => {
                     setDescription(event.target.value);
                 }}
                 />
 
                 <input type="file" onChange={(e) => setImage(e.target.files)}/>
-                 <button onClick={upload}>Upload</button> 
+                <button onClick={upload}>Upload</button> 
             </div>
             
         </div>

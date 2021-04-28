@@ -4,8 +4,6 @@
     background-position: top;
     width: 100%;
     height: 750px;
-    
-    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,4 +26,25 @@
 
 .UploadForm button {
     cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+    .Upload {
+        background-size: 290px;
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .UploadForm input {
+        width: 250px;
+        
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .UploadForm button {
+        width: 250px;
+        
+    }
 }

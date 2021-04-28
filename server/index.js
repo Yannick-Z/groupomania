@@ -6,14 +6,11 @@ const cors = require('cors')
 app.use(
     cors({
         origin : ['http://localhost:3000'],
-        methods : ['GET', 'POST'],
+        methods : ['GET', 'POST', 'DELETE'],
         credentials : true,
     })
     );
 app.use(express.json());
-
-
-
 
 const userRoute = require('./routes/User');
 app.use('/user', userRoute);

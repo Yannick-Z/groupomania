@@ -21,7 +21,7 @@ let history = useHistory();
 
 const login = () => {
     
-    Axios.post("http://localhost:3001/user/login",{
+    Axios.post("http://localhost:3001/user/login",{ //Envoie la requête post a la base de données.
         username: username,
         password: password,
     }).then((response) => {
@@ -41,20 +41,23 @@ const login = () => {
     });
 };
 
- useEffect(() => {
-    Axios.post('http://localhost:3001/user/login',{
-      headers: {
-          Authorization : "Bearer "+localStorage.getItem(token)
-      },
-      body:{
-          id: localStorage.getItem(token)
-      }
-    }).then((response)=>{
-        if (response.data.loggedIn == true ) {
-            setErrorMessage(response.data.user[0].username);
-        }
-    });
- }, []);
+useEffect(() => {
+    if (localStorage.getItem('token')){
+        Axios.post('http://localhost:3001/user/login/token',{
+            headers: {
+                Authorization : "Bearer "+localStorage.getItem(token)
+            },
+            body:{
+                id: localStorage.getItem(token)
+            }
+        }).then((response)=>{
+            if (response.data.loggedIn == true ) {
+                setErrorMessage(response.data.user[0].username);
+            }
+        });
+    }
+    
+}, []);
 
 
 return (
@@ -75,14 +78,9 @@ return (
             {errorMessage}               
         </div>
 
-             
         </div>
-     
-    
 
-
-
-)
+    )
 }
 
 export default Login

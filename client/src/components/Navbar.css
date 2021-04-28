@@ -13,11 +13,25 @@
     margin: 10px;
     text-decoration: none;
     color: white;
-    
+
 
 }
+
 .Navbar a:hover {
     cursor: pointer;
 
 }
 
+@media screen and (max-width: 500px) {
+    .Navbar {
+
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .Navbar a {
+
+        font-size: 15px;
+    }
+}

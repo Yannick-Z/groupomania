@@ -7,7 +7,7 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import Upload from './pages/Upload/Upload';
 import Profile from "./pages/Profile/Profile";
-import Admin from './components/Admin';
+
 
 
 
@@ -21,14 +21,8 @@ function App() {
       <Route  path="/login" exact render={(props) => <Login />} />
       <Route  path="/upload" exact render={() => <Upload />} />
       <Route  path="/profile" exact render={() => <Profile/>} />
-      <Route  path='/admin' exact render={()=> <Admin/> } />
-
-      
-      
-      
     </Router>
-    
-     </>
+    </>
     
   );
 }

@@ -11,6 +11,9 @@ function Home() {
     const [uploads, setUploads] = useState([]);
     const [likes, setLikes] = useState(0);
     const [role, setRole] = useState("");
+    const [yourUploads, setYourUploads] = useState([]);
+    const admin = localStorage.getItem('role');
+
     
     
     Axios.defaults.withCredentials = true;
@@ -30,17 +33,17 @@ function Home() {
 
     
     useEffect(() => {
-        Axios.get('http://localhost:3001/user/login').then((response)=>{
+        Axios.get('http://localhost:3001/user/login').then((response)=>{ //Requête Axios pour le login
             
             if (response.data.loggedIn == true ) {
-                setRole(response.data.user[0].role);
+                setRole(response.data.user[0].role); //Check le rôle de l'utilisateur
                 console.log(response.data);
             }
         });
     }, []);
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/upload").then((response) => {
+        Axios.get("http://localhost:3001/upload").then((response) => {//Récupère les uploads des utilisateurs
             setUploads(response.data);
             var tempArr = [];
 
@@ -54,7 +57,7 @@ function Home() {
     }, []);
 
     const likePost = (id) => {
-        Axios.post('http://localhost:3001/upload/like', {
+        Axios.post('http://localhost:3001/upload/like', { //Permet de mettre un like aux publications
             userLiking: localStorage.getItem("username"),
             postId: id,
         }).then((response) => {
@@ -63,36 +66,35 @@ function Home() {
         });
     };
 
-    /*const deleteUploads= (id)=> {
-        Axios.delete(`http://localhost:3001/upload/delete/${id}`).then((response) => {
+    const deleteYourUploads= (id)=> {
+        Axios.delete(`http://localhost:3001/upload/delete/${id}`).then((response) => {//Permet de supprimer ses publications
             setUploads(
                 uploads.filter((val) => {
                     return val.id !== id;
                 })
             )
         });
-    }; */
+    }; 
 
     
 
     return (
         <div className="Home">
             
-               <h1>{role}</h1>
+            <h1>{role}</h1>
             {uploads.map((val, key) => {
                 return (
-                    <div className="Post">
+                    <div className="Post" key= {key}>
                         <div className="Image">
                             <Image
                                 cloudName="dbxwrsswh"
                                 publicId={val.image}
-
                             />
                         </div>
                         <div className="Content">
                             <div className="title">
                                 {""}
-                                {val.title} / by @{val.author} </div>
+                                {val.title} / by @{val.author} </div> //Récupère l'auteur et titre
                             <div className="description">{val.description}</div>
                         </div>
                         <div className="Engagement">
@@ -101,7 +103,7 @@ function Home() {
                                     likePost(val.id);
                                     console.log(likes);
 
-                                    setLikes(likes + 1);
+                                    setLikes(likes + 1);//Actualise les likes avec +1
                                     console.log(likes);
 
 
@@ -110,11 +112,10 @@ function Home() {
 
                             />
                             {val.likes}
- 
-{/* {
-                              <button onClick={(key)=> {deleteUploads(val.id);
+
+                    { admin == "admin" ?  <button onClick={(key)=> {deleteYourUploads(val.id);
             }}
-            >Delete</button> } */}
+            >Delete</button> : null}
                         </div>
                     </div>
                 );

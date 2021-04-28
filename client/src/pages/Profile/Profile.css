@@ -63,3 +63,35 @@
     color: black;
 }
 
+@media  screen and (max-width: 650px) {
+    .Profile .Post {
+        width: 70%;
+    }
+
+    .Profile button {
+        width:300px;
+    }
+    
+}
+
+@media  screen and (max-width: 500px) {
+    .Profile button {
+        width:220px;
+    }
+    
+}
+
+@media  screen and (max-width: 400px) {
+    .Profile .Post {
+        width: 80%;
+    }
+    
+}
+
+@media  screen and (max-width: 350px) {
+    .Profile .Post {
+        width: 98%;
+    }
+    
+}
+

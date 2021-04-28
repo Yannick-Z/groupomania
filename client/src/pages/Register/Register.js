@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import "./Register.css";
 
-
 import Axios from 'axios' 
 
 function Register() {
@@ -10,7 +9,7 @@ function Register() {
 
 const register = () => {
     console.log(username);
-    Axios.post("http://localhost:3001/user/register",{
+    Axios.post("http://localhost:3001/user/register",{ // Envoie les informations a la base de données
         username: username,
         password: password,
     }).then((response) => {

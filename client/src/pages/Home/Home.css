@@ -72,3 +72,23 @@
     color: black;
 }
 
+@media  screen and (max-width: 650px) {
+    .Home .Post {
+        width: 70%;
+    }
+    
+}
+
+@media  screen and (max-width: 400px) {
+    .Home .Post {
+        width: 80%;
+    }
+    
+}
+
+@media  screen and (max-width: 350px) {
+    .Home .Post {
+        width: 98%;
+    }
+    
+}

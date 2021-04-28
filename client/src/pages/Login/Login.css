@@ -4,7 +4,7 @@
     background-position: top;
     width: 100%;
     height: 750px;
-    
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,7 +18,8 @@
 }
 
 
-.LoginForm input,button {
+.LoginForm input,
+button {
     margin: 5px;
     width: 400px;
     height: 50px;
@@ -27,4 +28,28 @@
 
 .LoginForm button {
     cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+    .Login {
+
+        background-size: 290px;
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .LoginForm input {
+
+        width: 250px;
+
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .LoginForm button {
+
+        width: 250px;
+
+    }
 }

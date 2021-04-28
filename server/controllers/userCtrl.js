@@ -40,8 +40,9 @@ login: (req, res) => {
         "SELECT * FROM Users WHERE username = ?",
     [username], 
         (err, results) => {
-            
-            bcrypt.compare(password, results[0].password, function(err, result) {
+            console.log(results);
+            const user = results[0];
+            bcrypt.compare(password, user.password, function(err, result) {
                 if (err) {
                     res.json({loggedIn: false, message: "Wrong username/password combo"});
                     
@@ -51,9 +52,9 @@ login: (req, res) => {
                         loggedIn: true,
                         username: username,
                         password: password,
-                        id :  user._id,                  
+                        id :  user.id,                  
                         role : user.role,
-                        token: jwt.sign({ userId : user._id}, process.env.SECRET, {expiresIn: '24'})
+                        token: jwt.sign({ userId : user.id}, process.env.SECRET, {expiresIn: '24'})
                         });
                 }
             });
@@ -80,12 +81,7 @@ login: (req, res) => {
 
     },
 
-    loginWithSession: (req,res) => {
-        if (req.session.user) {
-            res.send({ loggedIn: true, user: req.session.user})
-
-        } else {
-            res.send({loggedIn: false});
-        }
-    }
-}
+    loginWithToken: (req,res) => {
+        res.json ({loggedIn :  true})
+        
+        }}

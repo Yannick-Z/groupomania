@@ -10,7 +10,7 @@ function Profile() {
 
     useEffect(() => {
         Axios.get(`http://localhost:3001/upload/byUser/${localStorage.getItem("username")}`, ).then((response) => {
-        setYourUploads(response.data);
+        setYourUploads(response.data); //Récupère les données d'un des utilisateurs
         });
     });
 
@@ -18,7 +18,7 @@ function Profile() {
         Axios.delete(`http://localhost:3001/upload/delete/${id}`).then((response) => {
             setYourUploads(
                 yourUploads.filter((val) => {
-                    return val.id !== id;
+                    return val.id !== id; // Permet de supprimer ses piblications personelles
                 })
             )
         });
@@ -50,7 +50,7 @@ function Profile() {
             </div>
                 </div>
                 );
-             })}
+            })}
             </div>
             
         

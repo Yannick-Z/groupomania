@@ -46,16 +46,16 @@ router.post('/like', (req, res) => {
 
 
     db.query("INSERT INTO likes (userLiking, postId ) VALUES (?, ?) " , [userLiking, postId],
-     (err, results) => {
+    (err, results) => {
         if (err) {
             console.log (err);
         }
         db.query(
             "UPDATE Uploads SET likes = likes + 1 WHERE id = ?",
-         postId,
-         (err2, results2) => {
-              res.send(results);
-         })
+        postId,
+        (err2, results2) => {
+            res.send(results);
+        })
         }
     );
 
@@ -63,7 +63,7 @@ router.post('/like', (req, res) => {
 
 router.delete('/delete/:id', (req, res) => {
     const id = req.params.id
-    db.query("DELETE FROM uploads WHERE id= ?", id, (err, result) => {
+    db.query("DELETE FROM uploads WHERE id= ?", [id], (err, result) => {
         if (err) {
             console.log(err) 
             

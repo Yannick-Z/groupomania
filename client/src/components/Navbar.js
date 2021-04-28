@@ -4,10 +4,8 @@ import {useHistory} from 'react-router-dom';
 
 
 function Navbar() {
+    
     const[loggedIn, setLoggedIn] = useState(true);
-    
-
-    
     
     useEffect(() => {
         setLoggedIn(localStorage.getItem("loggedIn"));
@@ -31,36 +29,19 @@ function Navbar() {
             <a href="/">Home</a>
             {loggedIn ? (
                 <>
-                   <a href="/upload">Upload</a>
-                   <a href="/profile">Profile</a>
-                   <a href="/login" onClick={logOut}>logout</a>
-                   
-                   
-                   
-                   
-                   
+                <a href="/upload">Upload</a>
+                <a href="/profile">Profile</a>
+                <a href="/login" onClick={logOut}>logout</a>
                 </>
                
             ) : (
                 <>
+                <a href="/register">Register</a>
+                <a href="/login">Login</a>
+                </>
             
-            <a href="/register">Register</a>
-            <a href="/login">Login</a>
-            
-            
-            
-            
-            </>
-            
-            
-
-            
-            
-            
-    )}
-    
-    
-    </div>
+            )}
+        </div>
     );
 }
 
