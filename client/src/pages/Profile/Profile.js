@@ -9,7 +9,7 @@ function Profile() {
 
     const [yourUploads, setYourUploads] = useState([]);
     const [newDescription, setNewDescription] = useState("");
-    const [newImage, setNewImage] = useState([]);
+    const [image, setNewImage] = useState([]);
 
     useEffect(() => {
         Axios.get(`http://localhost:3001/upload/byUser/${localStorage.getItem("username")}`,).then((response) => {
@@ -28,7 +28,11 @@ function Profile() {
     };
 
     const updateUploadsImage = (id) => {
-        Axios.put(`http://localhost:3001/upload/update/${id}`, { image: newImage, id: id })
+
+        const formData = new FormData()
+        formData.append("file", image[0])
+        
+        Axios.put(`http://localhost:3001/upload/update/${id}`, formData)
             .then((response) => {
                 console.log(response);
                 window.alert('update');

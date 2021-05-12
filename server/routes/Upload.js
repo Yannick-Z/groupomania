@@ -61,8 +61,34 @@ router.post('/like', (req, res) => {
 
 });
 
+router.put('/update/:id', (req, res) => {
+    const id = req.params.id;
+    const image = req.body.image;
+    const description = req.body.description;
+  
+    if(image){
+      db.query("UPDATE uploads SET image = ? WHERE id = ?", [image, id], (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(result);
+        }
+      });
+    }
+    else{
+      db.query("UPDATE uploads SET description = ? WHERE id = ?", [ description, id], (err, result) => {
+           if (err) {
+              console.log(err);
+           } else {
+              res.send(result);
+                   }
+      });
+    }
+  });
+  
 
- router.put('/update/:id', (req, res) => {
+
+ /* router.put('/update/:id', (req, res) => {
     const id = req.params.id;
     const image = req.body.image;
    
@@ -73,9 +99,10 @@ router.post('/like', (req, res) => {
            res.send(result);
         }
     });
+
  }); 
 
- router.put('/update/:id', (req, res) => {
+ /* router.put('/update/:id', (req, res) => {
     const id = req.params.id;
     const description = req.body.description;
     
@@ -87,7 +114,7 @@ router.post('/like', (req, res) => {
             res.send(result);
                  }
     });
- });
+ }); */ 
 
 router.delete('/delete/:id', (req, res) => {
     const id = req.params.id
