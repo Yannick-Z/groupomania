@@ -61,6 +61,34 @@ router.post('/like', (req, res) => {
 
 });
 
+
+ router.put('/update/:id', (req, res) => {
+    const id = req.params.id;
+    const image = req.body.image;
+   
+    db.query("UPDATE uploads SET image = ? WHERE id = ?", [image, id], (err, result) => {
+        if (err) {
+            console.log(err);
+       } else {
+           res.send(result);
+        }
+    });
+ }); 
+
+ router.put('/update/:id', (req, res) => {
+    const id = req.params.id;
+    const description = req.body.description;
+    
+   
+    db.query("UPDATE uploads SET description = ? WHERE id = ?", [ description, id], (err, result) => {
+         if (err) {
+            console.log(err);
+         } else {
+            res.send(result);
+                 }
+    });
+ });
+
 router.delete('/delete/:id', (req, res) => {
     const id = req.params.id
     db.query("DELETE FROM uploads WHERE id= ?", [id], (err, result) => {

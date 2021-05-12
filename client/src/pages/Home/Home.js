@@ -94,7 +94,7 @@ function Home() {
                         <div className="Content">
                             <div className="title">
                                 {""}
-                                {val.title} / by @{val.author} </div> //Récupère l'auteur et titre
+                                {val.title} / by @{val.author} </div> 
                             <div className="description">{val.description}</div>
                         </div>
                         <div className="Engagement">
