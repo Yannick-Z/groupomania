@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image } from "cloudinary-react";
+ import { Image } from "cloudinary-react";
 import "./Profile.css";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 
@@ -15,7 +15,7 @@ function Profile() {
         Axios.get(`http://localhost:3001/upload/byUser/${localStorage.getItem("username")}`,).then((response) => {
             setYourUploads(response.data); //Récupère les données d'un des utilisateurs
         });
-    });
+    },[]);
 
     const deleteYourUploads = (id) => {
         Axios.delete(`http://localhost:3001/upload/delete/${id}`).then((response) => {
@@ -26,12 +26,13 @@ function Profile() {
             )
         });
     };
-
+    
     const updateUploadsImage = (id) => {
 
         const formData = new FormData()
-        formData.append("file", image[0])
-        
+        formData.append("image", image[0])
+        console.log(formData);
+        console.log(image);
         Axios.put(`http://localhost:3001/upload/update/${id}`, formData)
             .then((response) => {
                 console.log(response);
@@ -56,13 +57,10 @@ function Profile() {
                 return (
                     <div className="Post">
                         <div className="Image">
-                            <Image
-                                cloudName="dbxwrsswh"
-                                publicId={val.image}
-
-                            />
+                        <img src={`http://localhost:3001/images/`+ val.image} />
                             <input type="file" onChange={(e) =>
                                 setNewImage(e.target.files)} />
+                               
                             <button onClick={() => { updateUploadsImage(val.id) }}>Update</button>
                         </div>
                         <div className="Content">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./Home.css";
-import { Image } from 'cloudinary-react';
+//  import { Image } from 'cloudinary-react';
 import Axios from 'axios';
 
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
@@ -86,10 +86,7 @@ function Home() {
                 return (
                     <div className="Post" key= {key}>
                         <div className="Image">
-                            <Image
-                                cloudName="dbxwrsswh"
-                                publicId={val.image}
-                            />
+                        <img src={`http://localhost:3001/images/`+ val.image} />
                         </div>
                         <div className="Content">
                             <div className="title">

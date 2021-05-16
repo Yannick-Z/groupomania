@@ -15,29 +15,21 @@ function Upload() {
     const upload = () => {
 
         const formData = new FormData()
-        formData.append("file", image[0])
-        formData.append("upload_preset", "jy3vdyzz" )
-
-        Axios.post(`https://api.cloudinary.com/v1_1/dbxwrsswh/image/upload`, 
-        formData
-        ).then((response) => {
-            
-            const fileName = response.data.public_id;
-            
-                Axios.post("http://localhost:3001/upload", { //Permet de poster des publi, et est envoyé a la bdd
-                    title: title, 
-                    description: description, 
-                    image: fileName,
-                    author: localStorage.getItem('username')
-                }).then(()=> {
+        formData.append("image", image[0])
+        formData.append("data",  JSON.stringify( { //Permet de poster des publi, et est envoyé a la bdd
+            title: title, 
+            description: description, 
+            author: localStorage.getItem('username')
+        }))
+        Axios.post("http://localhost:3001/upload/",formData).then(()=>{
                     
                     history.push('/');
     
                 });
 
-        });
-};
-    return (
+        };
+    
+        return (
         <div className="Upload">
           <h1>Create a post</h1>
             <div className="UploadForm">

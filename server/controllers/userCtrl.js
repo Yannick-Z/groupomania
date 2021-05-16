@@ -2,6 +2,7 @@ const modelUser = require("../models/userModel");
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const querySql = require('../config/querySql'); 
 
 
 module.exports = {
@@ -14,8 +15,7 @@ module.exports = {
         bcrypt.hash(password, 10, function (err, hash) {
             if (err) return sendError(500, err, res);
             db.query(
-                "INSERT INTO Users (username, password, role) VALUES (?, ?, ?);",
-                [username, hash, 'user'],
+               querySql.register, [username, hash, 'user'],
                 (err, results) => {
                     if (err) return sendError(403, err, res);
                     console.log(results);
