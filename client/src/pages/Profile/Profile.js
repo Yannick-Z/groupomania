@@ -1,8 +1,9 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
- import { Image } from "cloudinary-react";
 import "./Profile.css";
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import UpdateIcon from '@material-ui/icons/Update';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 function Profile() {
@@ -10,6 +11,7 @@ function Profile() {
     const [yourUploads, setYourUploads] = useState([]);
     const [newDescription, setNewDescription] = useState("");
     const [image, setNewImage] = useState([]);
+    const [newTitle, setNewTitle] = useState("");
 
     useEffect(() => {
         Axios.get(`http://localhost:3001/upload/byUser/${localStorage.getItem("username")}`,).then((response) => {
@@ -48,6 +50,14 @@ function Profile() {
             })
     }
 
+    const updateUploadsTitle = (id) => {
+        Axios.put(`http://localhost:3001/upload/update/${id}`, { title: newTitle, id: id })
+            .then((response) => {
+                console.log(response);
+                window.alert('update');
+            })
+    }
+
 
     return (
 
@@ -61,27 +71,40 @@ function Profile() {
                             <input type="file" onChange={(e) =>
                                 setNewImage(e.target.files)} />
                                
-                            <button onClick={() => { updateUploadsImage(val.id) }}>Update</button>
+                            <UpdateIcon id="updateIcon" onClick={() => { updateUploadsImage(val.id) }}/>
+                            
                         </div>
                         <div className="Content">
                             <div className="title">
                                 {""}
-                                {val.title} / by @{val.author} </div>
+                                <input  type="text" placeholder="Update your title"
+                                    onChange={(event) => {
+                                        setNewTitle(event.target.value);
+                                    }}
+                                />
+                                 <UpdateIcon id="updateIcon" onClick={() => { updateUploadsTitle(val.id) }}/>
+                                {val.title} / by @{val.author} 
+                                </div>
                             <div className="description">{val.description}</div>
                         </div>
-                        <div className="Engagement">{val.likes}
-                            <button onClick={(key) => {
-                                deleteYourUploads(val.id);
-                            }}
-                            >Delete</button>
+                        <div className="Engagement">
+                            <FavoriteIcon/>
+                            {val.likes}
+                            
                             <div>
-                                <input type="text" placeholder="your description..."
+                                
+                                <input  type="text" placeholder="Update your description"
                                     onChange={(event) => {
                                         setNewDescription(event.target.value);
                                     }}
                                 />
+                                 <UpdateIcon id="updateIcon" onClick={() => { updateUploadsDescription(val.id) }}/>
                             </div>
-                            <button onClick={() => { updateUploadsDescription(val.id) }}>Update</button>
+                            <DeleteForeverIcon id="deleteIcon" onClick={(key) => {
+                                deleteYourUploads(val.id);
+                            }}
+                            />
+                            
                         </div>
                     </div>
                 );

@@ -11,6 +11,7 @@ const unlinkAsync = promisify(fs.unlink);
 
 
 const db = require('../config/db');
+const dbAsync = require('../models/model');
 
 router.post("/", multer, (req, res) => {
     req.body.data = JSON.parse(req.body.data)
@@ -50,6 +51,9 @@ router.get("/byUser/:username", (req, res) => {
     });
 });
 
+//Modifier des likes 
+
+
 router.post('/like', (req, res) => {
 
     const userLiking = req.body.userLiking
@@ -72,73 +76,43 @@ router.post('/like', (req, res) => {
 
 });
 
-router.put('/update/:id', multer, (req, res) => {
+
+//Modifier des description et images 
+router.put('/update/:id', multer, async (req, res) => {
     const id = req.params.id;
-    if(req.file){
-        const image = req.file.filename;
-        db.query("SELECT * FROM uploads WHERE id = ?", [id] ,(err, results) => {
-            if (err) {
-            console.log (err)
-            }
-            let pathname = results[0].image;
-            unlinkAsync(path.join(__dirname,"../images/"+ pathname));
-            db.query("UPDATE uploads SET image = ? WHERE id = ?", [image, id], (err, result) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  res.send(result);
-                }
-              });
+    // console.log(req.body);
+    const title = req.body.title;
+    const description = req.body.description;
+
+    try {
+        //met à jour le titre
+         await dbAsync.query("UPDATE uploads SET title = ?, description = ? WHERE id = ? ", [ title, description, id]);
+            console.log(req.image)
+         if(req.file){
+             const image = req.file.filename;
+             const fileExist = await dbAsync.query("SELECT * FROM uploads WHERE id = ?", [id], );
+             
+             if (fileExist !==[]){// TODO verifier le contenu de filexist quand il n'y a pas d'image qui existe
+                 console.log(">>>",fileExist[0]);
+                let pathname = fileExist[0].image;
+
+                unlinkAsync(path.join(__dirname,"../images/"+ pathname));
+                 await dbAsync.query("UPDATE uploads SET image = ? WHERE id = ?", [image, id], );
+             }
+        }
+        res.send({msg:"ok"});
+
+    } catch (error) {
+            console.log(error);
             
-        });
+        res.status(500).send(error);
         
     }
-    
-    
- 
-   
-    else{
-        const description = req.body.description;
- 
-      db.query("UPDATE uploads SET description = ? WHERE id = ?", [ description, id], (err, result) => {
-           if (err) {
-              console.log(err);
-           } else {
-              res.send(result);
-                   }
-      });
-    }
-  });
-  
+ });
 
 
- /* router.put('/update/:id', (req, res) => {
-    const id = req.params.id;
-    const image = req.body.image;
-   
-    db.query("UPDATE uploads SET image = ? WHERE id = ?", [image, id], (err, result) => {
-        if (err) {
-            console.log(err);
-       } else {
-           res.send(result);
-        }
-    });
+ //Supprimer des posts 
 
- }); 
-
- /* router.put('/update/:id', (req, res) => {
-    const id = req.params.id;
-    const description = req.body.description;
-    
-   
-    db.query("UPDATE uploads SET description = ? WHERE id = ?", [ description, id], (err, result) => {
-         if (err) {
-            console.log(err);
-         } else {
-            res.send(result);
-                 }
-    });
- }); */ 
 
 router.delete('/delete/:id', (req, res) => {
     const id = req.params.id

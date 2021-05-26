@@ -38,8 +38,8 @@ module.exports = {
         const username = req.body.username;
         const password = req.body.password;
         db.query(
-            "SELECT * FROM Users WHERE username = ?",
-            [username],
+            // "SELECT * FROM Users WHERE username = ?",
+            querySql.login, [username],
             (err, results) => {
                 if (err) return sendError(403, err, res);
                 if (results[0]=== undefined) return sendError(401, {"msg":"user or password didn't matched"}, res);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./Home.css";
 //  import { Image } from 'cloudinary-react';
 import Axios from 'axios';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 
@@ -95,7 +96,7 @@ function Home() {
                             <div className="description">{val.description}</div>
                         </div>
                         <div className="Engagement">
-                            <ThumbUpAltIcon
+                            <FavoriteIcon
                                 id="likeButton" onClick={() => {
                                     likePost(val.id);
                                     console.log(likes);
