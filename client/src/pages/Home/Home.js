@@ -3,25 +3,27 @@ import "./Home.css";
 //  import { Image } from 'cloudinary-react';
 import Axios from 'axios';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
+import { useHistory } from 'react-router-dom'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 
 
 function Home() {
+
 
     const [uploads, setUploads] = useState([]);
     const [likes, setLikes] = useState(0);
     const [role, setRole] = useState("");
     const [yourUploads, setYourUploads] = useState([]);
     const admin = localStorage.getItem('role');
+    const [comment, setComment] = useState('');
 
-    
-    
+
     Axios.defaults.withCredentials = true;
-    
-    
-   
-    
+
+
+
+
 
 
 
@@ -32,11 +34,11 @@ function Home() {
         }
     }, []);
 
-    
+
     useEffect(() => {
-        Axios.get('http://localhost:3001/user/login').then((response)=>{ //Requête Axios pour le login
-            
-            if (response.data.loggedIn == true ) {
+        Axios.get('http://localhost:3001/user/login').then((response) => { //Requête Axios pour le login
+
+            if (response.data.loggedIn == true) {
                 setRole(response.data.user[0].role); //Check le rôle de l'utilisateur
                 console.log(response.data);
             }
@@ -61,13 +63,15 @@ function Home() {
         Axios.post('http://localhost:3001/upload/like', { //Permet de mettre un like aux publications
             userLiking: localStorage.getItem("username"),
             postId: id,
+            
         }).then((response) => {
             console.log("you liked this post");
+            window.location.reload();
 
         });
     };
 
-    const deleteYourUploads= (id)=> {
+    const deleteYourUploads = (id) => {
         Axios.delete(`http://localhost:3001/upload/delete/${id}`).then((response) => {//Permet de supprimer ses publications
             setUploads(
                 uploads.filter((val) => {
@@ -75,53 +79,104 @@ function Home() {
                 })
             )
         });
-    }; 
+    };
 
-    
+    const commenter = (postId) => {
+        let userId = parseInt(localStorage.getItem('id'));
+        Axios.post(`http://localhost:3001/upload/comment`, { comment, postId, userId }).then((response) => {
+            window.location.reload();
+        })
+    }
+
+    const deleteComment = (postId) => {
+        Axios.delete(`http://localhost:3001/upload/comment/`).then((response) => {
+            window.location.reload();
+            setComment(
+                comment.filter((comment) => {
+                    return comment.commentaire !== postId;
+                    
+                })
+            )
+        })
+    }
+
+
 
     return (
         <div className="Home">
-            
+
             <h1>{role}</h1>
             {uploads.map((val, key) => {
                 return (
-                    <div className="Post" key= {key}>
+                    <div className="Post" key={key}>
                         <div className="Image">
-                        <img src={`http://localhost:3001/images/`+ val.image} />
+                            <img src={`http://localhost:3001/images/` + val.image} />
                         </div>
+
                         <div className="Content">
                             <div className="title">
                                 {""}
-                                {val.title} / by @{val.author} </div> 
+                                {val.title} / by @{val.author} </div>
                             <div className="description">{val.description}</div>
                         </div>
+
                         <div className="Engagement">
                             <FavoriteIcon
                                 id="likeButton" onClick={() => {
                                     likePost(val.id);
                                     console.log(likes);
-
                                     setLikes(likes + 1);//Actualise les likes avec +1
                                     console.log(likes);
-
-
-                                }}
-
-
-                            />
+                                }} />
                             {val.likes}
 
-                    { admin == "admin" ?  <button onClick={(key)=> {deleteYourUploads(val.id);
-            }}
-            >Delete</button> : null}
+                            <ChatBubbleOutlineIcon id="commentIcon" onClick={() => commenter(val.id)} />
+                            <input
+                                type="text"
+                                placeholder="commenter"
+                                onChange={(event) => {
+                                    setComment(event.target.value);
+                                }} />
+                            {val.comments.map((comment, key) => {
+                                return (
+                                    <div className="Commentaire" key={key}>
+
+
+                                        <div>
+                                            @ {comment.username} a écrit :
+                                            {comment.commentaire}
+
+                                        </div>
+                                    </div>
+
+                                )
+                            })
+
+                            }
+
+{admin == "admin" ? <button onClick={(key) => {
+                                deleteComment(comment.commentaire);
+                            }}
+                            >Delete</button> : null}
+
+                            {admin == "admin" ? <button onClick={(key) => {
+                                deleteYourUploads(val.id);
+                            }}
+                            >Delete</button> : null}
                         </div>
                     </div>
+
+
+
                 );
+
+
             })}
+
         </div>
     );
-}
 
+}
 
 
 

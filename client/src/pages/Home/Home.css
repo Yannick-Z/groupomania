@@ -10,7 +10,6 @@
 
 .Home .Post {
     width: 600px;
-    height: 500px;
     border: 2px solid black;
     display: flex;
     flex-direction: column;
@@ -53,6 +52,7 @@
     place-items: center;
 }
 
+
 .Home .Post .Engagement #likeButton {
     font-size: 40px;
     color:green;
@@ -71,6 +71,8 @@
     cursor: pointer;
     color: black;
 }
+ 
+
 
 @media  screen and (max-width: 650px) {
     .Home .Post {

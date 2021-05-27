@@ -12,8 +12,9 @@ module.exports = {
         const username = req.body.username;
         const password = req.body.password;
 
-        bcrypt.hash(password, 10, function (err, hash) {
-            if (err) return sendError(500, err, res);
+        bcrypt
+        .hash(password, 10, function (err, hash) {
+            if (err) return sendError('user already exist');
             db.query(
                querySql.register, [username, hash, 'user'],
                 (err, results) => {
@@ -21,24 +22,17 @@ module.exports = {
                     console.log(results);
                     res.send(results);
                 }
+                
             );
         })
-        // db.query(
-        //     "INSERT INTO Users (username, password, role) VALUES (?, ?, ?);",
-        //     [username, password, 'user'],
-        //     (err, results) => {
-        //         console.log(err);
-        //         console.log (results);
-        //         res.send(results);
-        //     }
-        // );
+        
     },
 
     login: (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
         db.query(
-            // "SELECT * FROM Users WHERE username = ?",
+            
             querySql.login, [username],
             (err, results) => {
                 if (err) return sendError(403, err, res);
