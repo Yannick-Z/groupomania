@@ -20,8 +20,8 @@
 
 .LoginForm input,
 button {
-    margin: 5px;
-    width: 400px;
+    margin: 4px;
+    width: 399px;
     height: 50px;
     font-size: 20px;
 }
@@ -30,6 +30,12 @@ button {
     cursor: pointer;
 }
 
+@media screen and (max-width: 750px) {
+    .Login {
+        background-size: 350px;
+        font-size: 11px;
+    }
+}
 @media screen and (max-width: 500px) {
     .Login {
 

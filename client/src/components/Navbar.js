@@ -29,6 +29,7 @@ function Navbar() {
             <a href="/">Home</a>
             {loggedIn ? (
                 <>
+                
                 <a href="/upload">Upload</a>
                 <a href="/profile">Profile</a>
                 <a href="/login" onClick={logOut}>logout</a>
@@ -38,6 +39,8 @@ function Navbar() {
                 <>
                 <a href="/register">Register</a>
                 <a href="/login">Login</a>
+                <a href='/contact'>Contact us</a>
+                
                 </>
             
             )}

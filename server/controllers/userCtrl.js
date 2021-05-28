@@ -14,7 +14,7 @@ module.exports = {
 
         bcrypt
         .hash(password, 10, function (err, hash) {
-            if (err) return sendError('user already exist');
+            if (err) return sendError(500,{"msg": "user already exist"}, res);
             db.query(
                querySql.register, [username, hash, 'user'],
                 (err, results) => {
@@ -55,11 +55,13 @@ module.exports = {
             });
     },
 
+
+
     loginWithToken: (req, res) => {
         res.json({ loggedIn: true })
 
     }
-}
+},
 
 
 function sendError(status, msg, res) {
@@ -67,3 +69,5 @@ function sendError(status, msg, res) {
     res.status = status;
     res.json({ ...msg });
 }
+
+   

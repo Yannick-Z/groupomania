@@ -10,7 +10,7 @@
 
 .Profile .Post {
     width: 600px;
-    height: 500px;
+    height: 530px;
     border: 2px solid black;
     display: flex;
     flex-direction: column;
@@ -45,6 +45,7 @@
     padding: 2px;
     color: rgb(3, 95, 3);
 }
+
 .Profile .Post .Content .description {
     flex: 70%;
     text-align: center;
@@ -78,12 +79,23 @@
     color: black;
 }
 
-#updateIcon {
+#value {
+    text-align: center;
+    color: green;
+}
+
+#updateIcon,  #updateIconTitle {
     position: absolute;
+    color: black;
+   
+}
+#updateIconTitle {
+margin-left: -30px;
 }
 
 input {
 color: darkgrey;
+
 }
 
 

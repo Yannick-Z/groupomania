@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import "./Home.css";
-//  import { Image } from 'cloudinary-react';
 import Axios from 'axios';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { useHistory } from 'react-router-dom'
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 
 

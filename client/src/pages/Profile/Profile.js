@@ -12,6 +12,7 @@ function Profile() {
     const [newDescription, setNewDescription] = useState("");
     const [image, setNewImage] = useState([]);
     const [newTitle, setNewTitle] = useState("");
+    
 
     useEffect(() => {
         Axios.get(`http://localhost:3001/upload/byUser/${localStorage.getItem("username")}`,).then((response) => {
@@ -58,8 +59,9 @@ function Profile() {
             })
     }
 
+    
 
-    return (
+     return (
 
         <div className="Profile">
             <h1>{localStorage.getItem("username")}</h1>
@@ -75,24 +77,24 @@ function Profile() {
                             
                         </div>
                         <div className="Content">
+                       
                             <div className="title">
-                                {""}
+                            
+                                <UpdateIcon id="updateIconTitle" onClick={() => { updateUploadsTitle(val.id) }}/>
+                                
                                 <input  type="text" placeholder="Update your title"
                                     onChange={(event) => {
                                         setNewTitle(event.target.value);
                                     }}
                                 />
-                                 <UpdateIcon id="updateIcon" onClick={() => { updateUploadsTitle(val.id) }}/>
-                                {val.title} / by @{val.author} 
                                 </div>
+                                <div id="value">{val.title} / by @{val.author} </div>
                             <div className="description">{val.description}</div>
                         </div>
                         <div className="Engagement">
                             <FavoriteIcon/>
                             {val.likes}
-                            
-                            <div>
-                                
+                        <div>
                                 <input  type="text" placeholder="Update your description"
                                     onChange={(event) => {
                                         setNewDescription(event.target.value);
@@ -107,8 +109,11 @@ function Profile() {
                             
                         </div>
                     </div>
+                    
                 );
-            })}
+                
+            })} 
+            
         </div>
 
 

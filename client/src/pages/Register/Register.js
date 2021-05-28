@@ -14,6 +14,7 @@ const register = () => {
         password: password,
     }).then((response) => {
         console.log(response);
+        alert('Votre compte à bien été crée !')
     });
 };
     
