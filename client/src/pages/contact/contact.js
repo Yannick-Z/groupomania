@@ -8,18 +8,20 @@ export default function ContactUs() {
     function sendEmail(e) {
         e.preventDefault();
 
-        emailjs.sendForm('gmail', 'template_3v1iljf', e.target, 'user_faJQ6Qwwsr2sSXmqeMWwI')
+/* fonction emailjs qui envoie un mail sur la boite gmail */
+        
+    emailjs.sendForm('gmail', 'template_3v1iljf', e.target, 'user_faJQ6Qwwsr2sSXmqeMWwI')
             .then((result) => {
                 console.log(result.text);
             }, (error) => {
                 console.log(error.text);
             });
         e.target.reset()
-        alert('votre formulaire à bien été soumis');
+        alert('votre formulaire à bien été soumis'); /* alert au click indiquant que le formulaire à bien été crée */
     }
-
+/* formulaire de contact */
     return (
-        <form onSubmit={sendEmail}>
+        <form onSubmit={sendEmail}> {/* onSubmit associé à la fonction sendEmail */}
 <div class="background">
   <div class="container">
     <div class="screen">
@@ -46,22 +48,27 @@ export default function ContactUs() {
         <div class="screen-body-item">
           <div class="app-form">
             <div class="app-form-group">
-              <input class="app-form-control" placeholder="NAME" value="Krisantus Wanandi"/>
+              <label for="name">name</label>
+              <input class="app-form-control" placeholder="NAME" id="name" value="VOTRE NOM"/>
             </div>
             <div class="app-form-group">
-              <input class="app-form-control" placeholder="VOTRE PSEUDO"/>
+              <label for="pseudo">Name</label>
+              <input class="app-form-control" placeholder="VOTRE PSEUDO" id="pseudo"/>
             </div>
             <div class="app-form-group">
-              <input class="app-form-control" placeholder="EMAIL"/>
+              <label for="email">email</label>
+              <input class="app-form-control" placeholder="EMAIL" id="email"/>
             </div>
             <div class="app-form-group">
-              <input class="app-form-control" placeholder="OBJET"/>
+              <label for="objet">objet</label>
+              <input class="app-form-control" placeholder="OBJET" id="objet"/>
             </div>
             <div class="app-form-group message">
-              <input class="app-form-control" placeholder="MESSAGE"/>
+              <label for="message">message</label>
+              <input class="app-form-control" placeholder="MESSAGE" id="message"/>
             </div>
             <div class="app-form-group buttons">
-              <button class="app-form-button">Envoyer</button>
+              <button class="app-form-button">Envoyer</button>  {/* envoie le formulaire */}
             </div>
           </div>
         </div>

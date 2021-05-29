@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import "./Home.css";
 import Axios from 'axios';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { useHistory } from 'react-router-dom'
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 
 
 function Home() {
-
 
     const [uploads, setUploads] = useState([]);
     const [likes, setLikes] = useState(0);
@@ -15,18 +13,12 @@ function Home() {
     const [yourUploads, setYourUploads] = useState([]);
     const admin = localStorage.getItem('role');
     const [comment, setComment] = useState('');
-
-
+    
     Axios.defaults.withCredentials = true;
 
 
-
-
-
-
-
     useEffect(() => {
-
+        
         if (!localStorage.getItem("loggedIn")) {
             localStorage.setItem("loggedIn", false);
         }
@@ -35,8 +27,7 @@ function Home() {
 
     useEffect(() => {
         Axios.get('http://localhost:3001/user/login').then((response) => { //Requête Axios pour le login
-
-            if (response.data.loggedIn == true) {
+            if (response.data.loggedIn == true) { //
                 setRole(response.data.user[0].role); //Check le rôle de l'utilisateur
                 console.log(response.data);
             }
@@ -47,13 +38,10 @@ function Home() {
         Axios.get("http://localhost:3001/upload").then((response) => {//Récupère les uploads des utilisateurs
             setUploads(response.data);
             var tempArr = [];
-
-            response.data.map((val) => {
+             response.data.map((val) => {
                 tempArr.push(val.likes);
             });
-
-            setLikes(tempArr);
-
+            setLikes(tempArr); //Affiche les likes utilisateurs
         });
     }, []);
 
@@ -61,10 +49,10 @@ function Home() {
         Axios.post('http://localhost:3001/upload/like', { //Permet de mettre un like aux publications
             userLiking: localStorage.getItem("username"),
             postId: id,
-            
+
         }).then((response) => {
             console.log("you liked this post");
-            window.location.reload();
+            window.location.reload();//la page se recharge automatiquement
 
         });
     };
@@ -79,22 +67,10 @@ function Home() {
         });
     };
 
-    const commenter = (postId) => {
+    const commenter = (postId) => { //Permet de commenter les publications
         let userId = parseInt(localStorage.getItem('id'));
-        Axios.post(`http://localhost:3001/upload/comment`, { comment, postId, userId }).then((response) => {
-            window.location.reload();
-        })
-    }
-
-    const deleteComment = (postId) => {
-        Axios.delete(`http://localhost:3001/upload/comment/`).then((response) => {
-            window.location.reload();
-            setComment(
-                comment.filter((comment) => {
-                    return comment.commentaire !== postId;
-                    
-                })
-            )
+        Axios.post(`http://localhost:3001/upload/comment`, { comment, postId, userId }).then((response) => {//Post le commentaire avec le nom de l'auteur
+            window.location.reload();//Recharge la page au post du commentaire
         })
     }
 
@@ -102,13 +78,12 @@ function Home() {
 
     return (
         <div className="Home">
-
-            <h1>{role}</h1>
+            <h1>{role}Home</h1>
             {uploads.map((val, key) => {
                 return (
                     <div className="Post" key={key}>
                         <div className="Image">
-                            <img src={`http://localhost:3001/images/` + val.image} />
+                            <img src={`http://localhost:3001/images/` + val.image} alt="image de post" />
                         </div>
 
                         <div className="Content">
@@ -128,53 +103,38 @@ function Home() {
                                 }} />
                             {val.likes}
 
-                            <ChatBubbleOutlineIcon id="commentIcon" onClick={() => commenter(val.id)} />
+                            <ChatBubbleOutlineIcon id="commentIcon" onClick={() => commenter(val.id)} /> {/* bouton commenter */}
+                            <label for="comment" id="comments">Commentaires : </label>
                             <input
                                 type="text"
                                 placeholder="commenter"
+                                id="comment"
                                 onChange={(event) => {
-                                    setComment(event.target.value);
+                                    setComment(event.target.value); /* Post le commentaire  */
                                 }} />
                             {val.comments.map((comment, key) => {
                                 return (
                                     <div className="Commentaire" key={key}>
-
-
                                         <div>
-                                            @ {comment.username} a écrit :
+                                            @ {comment.username} a écrit :  {/* Récupère le commentaire et le nom de l'auteur */}
                                             {comment.commentaire}
 
                                         </div>
                                     </div>
-
                                 )
                             })
-
-                            }
-
-{admin == "admin" ? <button onClick={(key) => {
-                                deleteComment(comment.commentaire);
-                            }}
-                            >Delete</button> : null}
-
-                            {admin == "admin" ? <button onClick={(key) => {
+                        }
+                            {admin == "admin" ? <button onClick={(key) => { /* Si admin alors il peut supprimer les posts */
                                 deleteYourUploads(val.id);
                             }}
                             >Delete</button> : null}
                         </div>
                     </div>
-
-
-
                 );
-
-
-            })}
-
-        </div>
-    );
-
-}
+             })}
+            </div>
+        );
+    }
 
 
 

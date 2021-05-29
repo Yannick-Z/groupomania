@@ -9,7 +9,7 @@ const MIME_TYPES = {
 };
 
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
+    destination: (req, file, callback) => { //Multer stock les images dans le dossier image
         callback(null, 'images')
     },
     filename: (req, file, callback) => {

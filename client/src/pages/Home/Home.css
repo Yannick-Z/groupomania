@@ -72,6 +72,9 @@
     color: black;
 }
  
+#comments {
+    color:darkolivegreen;
+}
 
 
 @media  screen and (max-width: 650px) {

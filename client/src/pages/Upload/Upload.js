@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./Upload.css";
 import Axios from 'axios'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 
 function Upload() {
@@ -16,42 +16,43 @@ function Upload() {
 
         const formData = new FormData()
         formData.append("image", image[0])
-        formData.append("data",  JSON.stringify( { //Permet de poster des publi, et est envoyé a la bdd
-            title: title, 
-            description: description, 
+        formData.append("data", JSON.stringify({ //Permet de poster des publi, et est envoyé a la bdd
+            title: title,
+            description: description,
             author: localStorage.getItem('username')
         }))
-        Axios.post("http://localhost:3001/upload/",formData).then(()=>{
-                    
-                    history.push('/');
-    
-                });
+        Axios.post("http://localhost:3001/upload/", formData).then(() => {
+            history.push('/');
+        });
+    };
 
-        };
-    
-        return (
+    return (
         <div className="Upload">
-          <h1>Create a post</h1>
+            <h1>Create a post</h1>
             <div className="UploadForm">
-                <input 
-                type="text" 
-                placeholder="Title..."
-                onChange= {(event) => {
-                    setTitle(event.target.value);
-                }}
+                <label for="titre">Title</label>
+                <input
+                    type="text"
+                    placeholder="Title..."
+                    id="titre"
+                    onChange={(event) => {
+                        setTitle(event.target.value); //L'utilisateur rentre son titre
+                    }}
                 />
-                <input 
-                type="text" 
-                placeholder="Description..."
-                onChange= {(event) => {
-                    setDescription(event.target.value);
-                }}
+                <label for="description">Description</label>
+                <input
+                    type="text"
+                    placeholder="Description..."
+                    id="description"
+                    onChange={(event) => {
+                        setDescription(event.target.value);//L'utilisateur rentre sa description
+                    }}
                 />
-
-                <input type="file" onChange={(e) => setImage(e.target.files)}/>
-                <button onClick={upload}>Upload</button> 
+                <label for="uploads">Uploads</label>
+                <input type="file" id="uploads" onChange={(e) => setImage(e.target.files)} /> {/* Lutilisateur rentre son image */}
+                <button onClick={upload}>Upload</button>
             </div>
-            
+
         </div>
     );
 }

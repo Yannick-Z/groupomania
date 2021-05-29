@@ -15,16 +15,16 @@ const { query } = require('../config/db');
 module.exports = {
 
 
-    createPost: (req, res) => {
+    createPost: (req, res) => { //Création de posts 
         req.body.data = JSON.parse(req.body.data)
         console.log(req.body);
-        const title = req.body.data.title;
-        const description = req.body.data.description;
-        const image = req.file.filename;
-        const author = req.body.data.author;
+        const title = req.body.data.title; //On rentre un titre
+        const description = req.body.data.description; //Une description
+        const image = req.file.filename; //Une image
+        const author = req.body.data.author; //L'auteur de la publication
 
         db.query(
-            querySql.createPost, [title, description, image, author],
+            querySql.createPost, [title, description, image, author], //Requete SQL pour la création de posts
             (err, results) => {
                 console.log(err);
                 res.send(results);
@@ -36,7 +36,7 @@ module.exports = {
 
     getPost: async (req, res) => {
         db.query(
-            querySql.getPost, (err, results) => {
+            querySql.getPost, (err, results) => { //Requete pour récuperer le post
                 if (err) {
                     console.log(err)
                     res.status(500).json(err);
@@ -44,23 +44,17 @@ module.exports = {
                 else {
                     results.forEach(result => {
                         db.query(
-                            querySql.getCommentbyPostId, [result.id], (err, comments) => {
-
+                            querySql.getCommentbyPostId, [result.id], (err, comments) => { //Requete SQL pour comementer et récuperer les commentaires
                                 if (err) {
                                     res.status(500).json(err);
                                 }
                                 else {
-
                                     result.comments = comments;
                                     if (results.indexOf(result) == results.length - 1)
                                         res.status(200).json(results);
                                 }
                             })
-
-
-
                     });
-
                 }
             });
     },
@@ -68,7 +62,7 @@ module.exports = {
     getUser: (req, res) => {
         const userName = req.params.username
         db.query(
-            querySql.getUser, userName, (err, results) => {
+            querySql.getUser, userName, (err, results) => { //On récupère le user
                 if (err) {
                     console.log(err)
                 }
@@ -86,7 +80,7 @@ module.exports = {
         const comment = req.body.comment
 
         db.query(
-            "INSERT INTO comment (commentaire, postId, userId) VALUES (?,?,?);", [comment ,postId, userId],
+            "INSERT INTO comment (commentaire, postId, userId) VALUES (?,?,?);", [comment, postId, userId], //On insère les commentaires dans la base de donnée
             (err, results) => {
                 if (err) {
                     console.log(err);
@@ -95,9 +89,6 @@ module.exports = {
                 else {
                     res.status(201).json(results)
                 }
-
-
-
             }
         )
     },
@@ -111,13 +102,13 @@ module.exports = {
         const postId = req.body.postId
 
         db.query(
-            querySql.like, [userLiking, postId],
+            querySql.like, [userLiking, postId], // Requete SQL pour poster des likes
             (err, results) => {
                 if (err) {
                     console.log(err);
                 }
                 db.query(
-                    "UPDATE Uploads SET likes = likes + 1 WHERE id = ?",
+                    "UPDATE Uploads SET likes = likes + 1 WHERE id = ?", //Actualaise les likes dans la BDD
                     postId,
                     (err2, results2) => {
                         res.send(results);
@@ -131,7 +122,6 @@ module.exports = {
     //Modifier des description et images 
     modifyPost: async (req, res) => {
         const id = req.params.id;
-        // console.log(req.body);
         const title = req.body.title;
         const description = req.body.description;
 
@@ -167,13 +157,13 @@ module.exports = {
 
     deletePost: (req, res) => {
         const id = req.params.id
-        db.query("SELECT * FROM uploads WHERE id = ?", [id], (err, results) => {
+        db.query("SELECT * FROM uploads WHERE id = ?", [id], (err, results) => { //permet de selectionner les posts dans la base de donnée
             if (err) {
                 console.log(err)
             }
             let pathname = results[0].image;
             unlinkAsync(path.join(__dirname, "../images/" + pathname));
-            db.query("DELETE FROM uploads WHERE id= ?", [id], (err, result) => {
+            db.query("DELETE FROM uploads WHERE id= ?", [id], (err, result) => { //Permt de supprimer les posts dans la base de données
                 if (err) {
                     console.log(err)
 
