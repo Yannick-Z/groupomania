@@ -49,23 +49,23 @@ export default function ContactUs() {
           <div class="app-form">
             <div class="app-form-group">
               <label for="name">name</label>
-              <input class="app-form-control" placeholder="NAME" id="name" value="VOTRE NOM"/>
+              <input class="app-form-control" placeholder="VOTRE NOM" id="name" name="names" />
             </div>
             <div class="app-form-group">
               <label for="pseudo">Name</label>
-              <input class="app-form-control" placeholder="VOTRE PSEUDO" id="pseudo"/>
+              <input class="app-form-control" placeholder="VOTRE PSEUDO" id="pseudo" name="pseudos"/>
             </div>
             <div class="app-form-group">
               <label for="email">email</label>
-              <input class="app-form-control" placeholder="EMAIL" id="email"/>
+              <input class="app-form-control" placeholder="EMAIL" id="email" name="mail"/>
             </div>
             <div class="app-form-group">
               <label for="objet">objet</label>
-              <input class="app-form-control" placeholder="OBJET" id="objet"/>
+              <input class="app-form-control" placeholder="OBJET" id="objet" name="object"/>
             </div>
             <div class="app-form-group message">
               <label for="message">message</label>
-              <input class="app-form-control" placeholder="MESSAGE" id="message"/>
+              <input class="app-form-control" placeholder="MESSAGE" id="message" name="messages"/>
             </div>
             <div class="app-form-group buttons">
               <button class="app-form-button">Envoyer</button>  {/* envoie le formulaire */}

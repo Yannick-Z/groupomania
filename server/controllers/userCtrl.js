@@ -7,12 +7,10 @@ const querySql = require('../config/querySql');
 
 module.exports = {
     
-
-
     register: (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
-
+     
         bcrypt.hash(password, 10, function (err, hash) { //Hash le mot de passe
             if (err) return sendError(500, err, res);
             db.query(
@@ -22,10 +20,10 @@ module.exports = {
                     res.send(results);
                 }
 
-            );
-        })
-
-    },
+              );
+            })            
+        
+        },
 
     login: (req, res) => {
         const username = req.body.username;

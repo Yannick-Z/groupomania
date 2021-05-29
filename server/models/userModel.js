@@ -1,4 +1,4 @@
-db = require("./model");
+ db = require("./model");
 
 async function register(username, password){
     try{
