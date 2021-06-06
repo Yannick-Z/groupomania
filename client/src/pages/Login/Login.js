@@ -22,10 +22,10 @@ const login = () => {
     }).then((response) => { 
             if (response.data.loggedIn) {
             localStorage.setItem("loggedIn", true);
-            localStorage.setItem("username", response.data.username);
-            localStorage.setItem("id", response.data.id);
+              localStorage.setItem("username", response.data.username);
+                localStorage.setItem("id", response.data.id);
             localStorage.setItem("token", response.data.token);
-            localStorage.setItem("role", response.data.role);
+             localStorage.setItem("role", response.data.role);
             history.push("/");
         } else {  
             setErrorMessage(response.data.message);  

@@ -39,16 +39,17 @@ module.exports = {
                 console.log('---------', results[0]);
                 const user = results[0];
                 bcrypt.compare(password, user.password,  function (err, result) { //On compare le mot de passe 
-                    if (result)
+                    if (result){
+                    console.log('encours')
                      res.json({
                         loggedIn: true,
                         username: username,
                         password: password,
                         id: user.id,
                         role: user.role,
-                        token: jwt.sign({ userId: user.id }, process.env.SECRET, { expiresIn: '24' })
+                        token: jwt.sign({ userId: user.id }, process.env.SECRET, { expiresIn: '24h' })
                     });
-                    else {
+                 } else {
                         return sendError(403, { loggedIn: false, message: "Wrong username/password combo" }, res); // Si le mot de passe est diff"rent alors on nous retourne un message
                     }
                 })
@@ -59,10 +60,10 @@ module.exports = {
 
 
     loginWithToken: (req, res) => {
-        res.json({ loggedIn: true }) //On se log avec le token
+       res.json({ loggedIn: true }) //On se log avec le token
 
     }
-}
+ }
 
 
     function sendError(status, msg, res) {

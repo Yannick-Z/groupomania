@@ -16,12 +16,12 @@ module.exports = {
 
 
     createPost: (req, res) => { //Création de posts 
-        req.body.data = JSON.parse(req.body.data)
+        // req.body.data = JSON.parse(req.body.data)
         console.log(req.body);
-        const title = req.body.data.title; //On rentre un titre
-        const description = req.body.data.description; //Une description
+        const title = req.body.title; //On rentre un titre
+        const description = req.body.description; //Une description
         const image = req.file.filename; //Une image
-        const author = req.body.data.author; //L'auteur de la publication
+        const author = req.body.author; //L'auteur de la publication
 
         db.query(
             querySql.createPost, [title, description, image, author], //Requete SQL pour la création de posts
@@ -60,7 +60,7 @@ module.exports = {
     },
 
     getUser: (req, res) => {
-        const userName = req.params.username
+        const userName = req.params.token
         db.query(
             querySql.getUser, userName, (err, results) => { //On récupère le user
                 if (err) {

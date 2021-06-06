@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, } from 'react-router-dom'
 import Home from "./pages/Home/Home";
 import Navbar from "./components/Navbar";
 import Register from "./pages/Register/Register";
@@ -17,9 +17,9 @@ function App() {
     <>
       <Navbar />
       <Router>
-        <Route path="/" exact render={(props) => <Home />} />
+        <Route path="/" exact render={() => <Home />} />
         <Route path="/register" exact render={() => <Register />} />
-        <Route path="/login" exact render={(props) => <Login />} />
+        <Route path="/login" exact render={() => <Login />} />
         <Route path="/upload" exact render={() => <Upload />} />
         <Route path="/profile" exact render={() => <Profile />} />
         <Route path="/contact" exact render={() => <Contact />} />

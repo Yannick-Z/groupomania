@@ -21,13 +21,19 @@ function Upload() {
             description: description,
             author: localStorage.getItem('username')
         }))
-        Axios.post("http://localhost:3001/upload/", formData).then(() => {
+        Axios.post(
+            "http://localhost:3001/upload/" ,
+            formData, 
+            {
+                headers : { authorization : `Bearer ${localStorage.getItem("token")}`}
+            }
+        ).then(() => {
             history.push('/');
         });
     };
 
     return (
-        <div className="Upload">
+        <div className="Upload"> 
             <h1>Create a post</h1>
             <div className="UploadForm">
                 <label for="titre">Title</label>

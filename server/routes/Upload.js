@@ -1,28 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('../middleware/multer-config');
-const fs = require("fs");
-const path = require("path");
 const { promisify } = require("util");
 const uploadsController = require('../controllers/uploadsCtrl');
-const unlinkAsync = promisify(fs.unlink);
-const db = require('../config/db');
-const dbAsync = require('../models/model');
+
+const auth = require('../middleware/auth');
 
 
-
-router.post("/", multer, uploadsController.createPost);
+router.post("/", auth, multer, uploadsController.createPost);
 
 router.get("/", uploadsController.getPost);
 
-router.get("/byUser/:username", uploadsController.getUser);
+router.get("/byUser/:token", uploadsController.getUser);
 
-router.post('/like', uploadsController.like);
+router.post('/like',auth, uploadsController.like);
 
-router.put('/update/:id', multer, uploadsController.modifyPost);
+router.put('/update/:id',auth, multer, uploadsController.modifyPost);
 
-router.delete('/delete/:id', multer, uploadsController.deletePost);
+router.delete('/delete/:id', auth,multer, uploadsController.deletePost);
 
-router.post('/comment', multer, uploadsController.comment);
+router.post('/comment', auth, multer, uploadsController.comment);
 
 module.exports = router; 
