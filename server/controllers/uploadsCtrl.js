@@ -16,7 +16,7 @@ module.exports = {
 
 
     createPost: (req, res) => { //Création de posts 
-        // req.body.data = JSON.parse(req.body.data)
+    //  req.body.data = JSON.parse(req.body.data)
         console.log(req.body);
         const title = req.body.title; //On rentre un titre
         const description = req.body.description; //Une description

@@ -37,7 +37,7 @@ useEffect(() => {
     if (localStorage.getItem('token')){
         Axios.post('http://localhost:3001/user/login/token',{ //Envoie le token d'authentification
             headers: {
-                Authorization : "Bearer "+localStorage.getItem(token)
+                authorization : "Bearer "+localStorage.getItem(token)
             },
             body:{
                 id: localStorage.getItem(token)

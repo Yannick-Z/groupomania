@@ -25,16 +25,6 @@ function Home() {
     }, []);
 
 
-    // useEffect(() => {
-    //     console.log('salut')
-    //     Axios.get('http://localhost:3001/user/login').then((response) => { //Requête Axios pour le login
-    //         if (response.data.loggedIn == true) { //
-    //             setRole(response.data.user[0].role); //Check le rôle de l'utilisateur
-    //             console.log(response.data);
-    //         }
-    //     });
-    // }, []);
-
     useEffect(() => {
         Axios.get("http://localhost:3001/upload").then((response) => {//Récupère les uploads des utilisateurs
             setUploads(response.data);

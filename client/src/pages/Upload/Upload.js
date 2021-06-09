@@ -19,7 +19,8 @@ function Upload() {
         formData.append("data", JSON.stringify({ //Permet de poster des publi, et est envoyé a la bdd
             title: title,
             description: description,
-            author: localStorage.getItem('username')
+            author: localStorage.getItem('username'),
+            userId: localStorage.getItem('id'),
         }))
         Axios.post(
             "http://localhost:3001/upload/" ,

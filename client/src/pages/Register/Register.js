@@ -21,6 +21,7 @@ function Register() {
     };
 
     return (
+        <div id="earth">
         <div className="Register">
             <h1>Registration</h1>
             <div className="RegisterForm">
@@ -39,6 +40,7 @@ function Register() {
                 />
                 <button onClick={register}>Register</button>
             </div>
+        </div>
         </div>
     );
 }

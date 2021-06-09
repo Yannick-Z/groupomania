@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('../middleware/multer-config');
-const { promisify } = require("util");
+// const { promisify } = require("util");
 const uploadsController = require('../controllers/uploadsCtrl');
 
 const auth = require('../middleware/auth');

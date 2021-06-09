@@ -47,7 +47,7 @@ module.exports = {
                         password: password,
                         id: user.id,
                         role: user.role,
-                        token: jwt.sign({ userId: user.id }, process.env.SECRET, { expiresIn: '24h' })
+                        token: jwt.sign({ userId: user.id }, process.env.SECRET, { expiresIn: '7200' })
                     });
                  } else {
                         return sendError(403, { loggedIn: false, message: "Wrong username/password combo" }, res); // Si le mot de passe est diff"rent alors on nous retourne un message
