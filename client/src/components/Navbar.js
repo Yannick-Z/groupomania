@@ -8,16 +8,17 @@ function Navbar() {
     const [loggedIn, setLoggedIn] = useState(true);
 
     useEffect(() => {
-        setLoggedIn(localStorage.getItem("loggedIn"));
+        // @ts-ignore
+        setLoggedIn(localStorage.getItem('loggedIn'));
 
-        }, [localStorage.getItem("loggedIn")]);
+    }, [localStorage.getItem('loggedIn')]);
 
     const history = useHistory();
 
     function logOut() {
         localStorage.clear();
         history.push('/');
-}
+    }
 
     return (
         <div className="Navbar">
@@ -46,4 +47,4 @@ function Navbar() {
     );
 }
 
-export default Navbar
+export default Navbar;

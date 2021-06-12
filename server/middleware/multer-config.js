@@ -10,13 +10,13 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => { //Multer stock les images dans le dossier image
-        callback(null, 'images')
+        callback(null, 'images');
     },
     filename: (req, file, callback) => {
         const extension = MIME_TYPES[file.mimetype];
         // const name = file.originalname.split(' ').join('_');
         
-        let filename = Date.now()+"."+extension;
+        let filename = Date.now()+'.'+extension;
         callback(null, filename);
 
     }
