@@ -7,13 +7,13 @@ const unlinkAsync = promisify(fs.unlink);
 
 const db = require('../config/db');
 const dbAsync = require('../models/model');
- 
 
-module.exports = { 
+
+module.exports = {
 
 
     createPost: (req, res) => { //Création de posts  
-        req.body= JSON.parse(req.body.data);
+        req.body = JSON.parse(req.body.data);
         const title = req.body.title; //On rentre un titre  
         const description = req.body.description; //Une description
         const image = req.file.filename; //Une image
@@ -22,7 +22,7 @@ module.exports = {
         db.query(
             querySql.createPost, [title, description, image, author], //Requete SQL pour la création de posts
             (err, results) => {
-                console.log(err); 
+                console.log(err);
                 res.send(results);
             }
         );
@@ -153,11 +153,13 @@ module.exports = {
 
     deletePost: (req, res) => {
         const id = req.params.id;
-         
+
+    
+    
         db.query('SELECT * FROM uploads WHERE id = ?', [id], (err, results) => { //permet de selectionner les posts dans la base de donnée
             if (err) {
                 console.log(err);
-            } 
+            }
             let pathname = results[0].image;
             unlinkAsync(path.join(__dirname, '../images/' + pathname));
             db.query('DELETE FROM uploads WHERE id= ?', [id], (err, result) => { //Permt de supprimer les posts dans la base de données

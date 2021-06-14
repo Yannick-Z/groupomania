@@ -5,17 +5,17 @@ module.exports =  (req, res, next) => {
 
     try {
      
-        console.log(req.body);
+       
         if (!req.headers.authorization) throw ('pas de jeton');
-        //  req.body.data = JSON.parse(req.body.data);
+           
         if (!req.body.data) {
-            // req.body.data = JSON.parse(req.body.data);
+            //  req.body.data = JSON.parse(req.body.data);
             if (!req.body) throw ('l\'id n\'est pas défini');
         }
        
         const token = req.headers.authorization.split(' ')[1];
         console.log(token);
-        req.token = jwt.verify(token, process.env.SECRET);
+        req.token = jwt.verify(token,  process.env.SECRET);
         
        
         next();

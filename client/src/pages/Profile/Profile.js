@@ -14,18 +14,28 @@ function Profile() {
     const [newTitle, setNewTitle] = useState('');
 
 
+
     useEffect(() => {
         Axios.get(`http://localhost:3001/upload/byUser/${localStorage.getItem('username')}`,
+        {
+            headers : { 
+                authorization : `Bearer ${localStorage.getItem('token')}`}
+        },
         ).then((response) => {
             setYourUploads(response.data); //Récupère les données d'un des utilisateurs
         });
     }, []);
 
     const deleteYourUploads = (id) => {
-        
+
         Axios.delete(`http://localhost:3001/upload/delete/${id}`,
-        
-        
+            {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+
+
         ).then(() => {
             setYourUploads(
                 yourUploads.filter((val) => {
@@ -41,27 +51,51 @@ function Profile() {
         formData.append('image', image[0]);
         console.log(formData);
         console.log(image);
-        Axios.put(`http://localhost:3001/upload/update/${id}`, formData) //Envoie la nouvelle image
-            .then((response) => {
-                console.log(response);
-                window.alert('update'); //Alerte indiquant que l'image à été modifiée
-            });
+        Axios.put(`http://localhost:3001/upload/update/${id}`, formData,
+
+            {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            },
+        ).then((response) => {
+            console.log(response);
+            window.alert('update'); //Alerte indiquant que l'image à été modifiée
+        });
     };
 
     const updateUploadsDescription = (id) => {  // Permets de mofier la description
-        Axios.put(`http://localhost:3001/upload/update/${id}`, { description: newDescription, id: id })
-            .then((response) => {
-                console.log(response);
-                window.alert('update'); //Alerte nouvelle description
-            });
+        Axios.put(`http://localhost:3001/upload/update/${id}`,
+            {
+                description: newDescription,
+                id: id
+            },
+            {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            },
+        ).then((response) => {
+            console.log(response);
+            window.alert('update'); //Alerte nouvelle description
+        });
     };
 
     const updateUploadsTitle = (id) => { //Permets de modifier le titre
-        Axios.put(`http://localhost:3001/upload/update/${id}`, { title: newTitle, id: id })
-            .then((response) => {
-                console.log(response);
-                window.alert('update');//Alerte nouveau titre
-            });
+        Axios.put(`http://localhost:3001/upload/update/${id}`,
+            {
+                title: newTitle,
+                id: id
+            },
+            {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            },
+        ).then((response) => {
+            console.log(response);
+            window.alert('update');//Alerte nouveau titre
+        });
     };
 
     return (

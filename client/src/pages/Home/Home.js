@@ -40,11 +40,16 @@ function Home() {
     }, []);
 
     const likePost = (id) => {
-        Axios.post('http://localhost:3001/upload/like', { //Permet de mettre un like aux publications
+        Axios.post('http://localhost:3001/upload/like', 
+        { 
             userLiking: localStorage.getItem('username'),
             postId: id,
-
-        }).then(() => {
+        },
+        {
+            headers : { 
+                authorization : `Bearer ${localStorage.getItem('token')}`}
+        },
+        ).then(() => {
             console.log('you liked this post');
             window.location.reload();//la page se recharge automatiquement
 
@@ -63,7 +68,15 @@ function Home() {
 
     const commenter = (postId) => { //Permet de commenter les publications
         let userId = parseInt(localStorage.getItem('id'));
-        Axios.post('http://localhost:3001/upload/comment', { comment, postId, userId }).then(() => {//Post le commentaire avec le nom de l'auteur
+        Axios.post('http://localhost:3001/upload/comment', { comment, postId, userId },
+        {
+            headers : { 
+                authorization : `Bearer ${localStorage.getItem('token')}`}
+        },
+        
+        
+        
+        ).then(() => {//Post le commentaire avec le nom de l'auteur
             window.location.reload();//Recharge la page au post du commentaire
         });
     };
