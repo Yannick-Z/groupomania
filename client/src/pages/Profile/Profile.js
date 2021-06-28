@@ -4,6 +4,7 @@ import './Profile.css';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import UpdateIcon from '@material-ui/icons/Update';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import { useHistory } from 'react-router-dom';
 
 
 function Profile() {
@@ -15,27 +16,43 @@ function Profile() {
 
 
 
+
     useEffect(() => {
-        Axios.get(`http://localhost:3001/upload/byUser/${localStorage.getItem('username')}`,
-        {
-            headers : { 
-                authorization : `Bearer ${localStorage.getItem('token')}`}
-        },
+        if (!localStorage.getItem('loggedIn')) {
+            localStorage.setItem('loggedIn', true);
+        }
+    }, []);
+
+    let history = useHistory();
+
+
+
+
+    useEffect(() => {
+        Axios.post(`http://localhost:3001/upload/byUser/${localStorage.getItem('username')}`, //On récupère les post via le username
+            {
+                id: localStorage.getItem('id')//On récupère l'id
+            },
+            {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}` //On récupère le token
+                }
+            },
         ).then((response) => {
             setYourUploads(response.data); //Récupère les données d'un des utilisateurs
         });
     }, []);
 
+    //Supprimer ses posts
     const deleteYourUploads = (id) => {
-
-        Axios.delete(`http://localhost:3001/upload/delete/${id}`,
+        Axios.delete(`http://localhost:3001/upload/delete/${id}`, //Permet de supprimer ses posts
             {
+
+
                 headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`
+                    authorization: `Bearer ${localStorage.getItem('token')}` //On récupère le token
                 }
-            }
-
-
+            },
         ).then(() => {
             setYourUploads(
                 yourUploads.filter((val) => {
@@ -45,19 +62,12 @@ function Profile() {
         });
     };
 
+    //Modifier ses posts
     const updateUploadsImage = (id) => { // Permet de modifier ses images 
-
         const formData = new FormData();
         formData.append('image', image[0]);
-        console.log(formData);
-        console.log(image);
         Axios.put(`http://localhost:3001/upload/update/${id}`, formData,
 
-            {
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            },
         ).then((response) => {
             console.log(response);
             window.alert('update'); //Alerte indiquant que l'image à été modifiée
@@ -72,7 +82,7 @@ function Profile() {
             },
             {
                 headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`
+                    authorization: `Bearer ${localStorage.getItem('token')}` //Onrécupère le token
                 }
             },
         ).then((response) => {
@@ -98,9 +108,30 @@ function Profile() {
         });
     };
 
+    const deleteUser = () => {
+        Axios.delete('http://localhost:3001/user/deleteUser/', { //Permet de supprimer un user
+
+            'data': {
+                'id': localStorage.getItem('id'), //On récupère l'id
+                'userToDelete': localStorage.getItem('id'), 
+            },
+            'headers': {
+                'authorization': `Bearer ${localStorage.getItem('token')}` //recupère le token
+            }
+        }
+        ).then((response) => {
+            console.log(response);
+            window.alert('compte supprimé');//Alerte nouveau titre
+            history.push('/login');
+        });
+    };
+
+
+
     return (
         <div className="Profile">
-            <h1>{localStorage.getItem('username')}</h1>
+
+            <h2>{localStorage.getItem('username')}</h2>
             {yourUploads.map((val) => {
                 return (
                     // eslint-disable-next-line react/jsx-key
@@ -144,14 +175,16 @@ function Profile() {
                             }}
                             />
 
+
                         </div>
                     </div>
 
                 );
 
             })}
-
+            <h3><DeleteForeverIcon id="deleteAccount" onClick={() => { deleteUser(); }} />Supprimer votre compte</h3> 
         </div>
+
 
 
     );

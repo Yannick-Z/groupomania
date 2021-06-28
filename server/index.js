@@ -8,6 +8,8 @@ const app = express();
 
 
 
+
+// Permet d'autoriser le CRUD
 app.use(
     cors({
         origin : ['http://localhost:3000'],
@@ -22,11 +24,11 @@ app.use(express.urlencoded({limit: '50mb', extended: true, parameterLimit:5000})
 app.use(helmet());
 app.use('/images', 
     express.static(path.join(__dirname,
-        'images')));
+        'images'))); //Autorise multer
 
 
 
-
+//Routes pour les user et uploads
 const userRoute = require('./routes/User');
 app.use('/user', userRoute);
 const uploadRoute = require('./routes/Upload');

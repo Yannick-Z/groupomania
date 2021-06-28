@@ -9,26 +9,23 @@ function Home() {
 
     const [uploads, setUploads] = useState([]);
     const [likes, setLikes] = useState(0);
-    
-    // const [role] = useState('');
-    
-    // const [yourUploads, setYourUploads] = useState([]);
     const admin = localStorage.getItem('role');
     const [comment, setComment] = useState('');
-    
- 
+
+
 
 
     useEffect(() => {
-        
+
         if (!localStorage.getItem('loggedIn')) {
-            localStorage.setItem('loggedIn', false);
+            localStorage.setItem('loggedIn', true);
         }
     }, []);
 
 
     useEffect(() => {
         Axios.get('http://localhost:3001/upload',
+
         ).then((response) => {//Récupère les uploads des utilisateurs
             setUploads(response.data);
             var tempArr = [];
@@ -40,15 +37,17 @@ function Home() {
     }, []);
 
     const likePost = (id) => {
-        Axios.post('http://localhost:3001/upload/like', 
-        { 
-            userLiking: localStorage.getItem('username'),
-            postId: id,
-        },
-        {
-            headers : { 
-                authorization : `Bearer ${localStorage.getItem('token')}`}
-        },
+        Axios.post('http://localhost:3001/upload/like', //Permet de poster des likes sur les posts utilisateurs
+            {
+                userLiking: localStorage.getItem('username'),
+                postId: id,
+                id: localStorage.getItem('id') //On récupère l'id du user
+            },
+            {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}` //Permet de récupérer le token 
+                }
+            },
         ).then(() => {
             console.log('you liked this post');
             window.location.reload();//la page se recharge automatiquement
@@ -69,13 +68,14 @@ function Home() {
     const commenter = (postId) => { //Permet de commenter les publications
         let userId = parseInt(localStorage.getItem('id'));
         Axios.post('http://localhost:3001/upload/comment', { comment, postId, userId },
-        {
-            headers : { 
-                authorization : `Bearer ${localStorage.getItem('token')}`}
-        },
-        
-        
-        
+            {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}` //Récupération du jeton token
+                }
+            },
+
+
+
         ).then(() => {//Post le commentaire avec le nom de l'auteur
             window.location.reload();//Recharge la page au post du commentaire
         });
@@ -90,14 +90,14 @@ function Home() {
                 return (
                     <div className="Post" key={key}>
                         <div className="Image">
-                            <img src={'http://localhost:3001/images/' + val.image} alt="image de post" />
+                            <img src={'http://localhost:3001/images/' + val.image} alt="image de post" /> {/*Affiche l'image du post*/}
                         </div>
 
                         <div className="Content">
                             <div className="title">
                                 {''}
-                                {val.title} / by @{val.author} </div>
-                            <div className="description">{val.description}</div>
+                                {val.title} / by @{val.author} </div> {/*Affiche le titre et l'auteur*/}
+                            <div className="description">{val.description}</div> {/*Affiche la description*/}
                         </div>
 
                         <div className="Engagement">

@@ -166,12 +166,6 @@
     color: #b9134f;
   }
   
-  
-  
-  
-  
-
-  
   @media screen and (max-width: 520px) {
     .screen-body {
       flex-direction: column;

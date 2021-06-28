@@ -25,10 +25,11 @@ function Login() {
             if (response.data.loggedIn) {
                 // @ts-ignore
                 localStorage.setItem('loggedIn', true);
-                localStorage.setItem('username', response.data.username);
+                localStorage.setItem('username', response.data.username); //On récupère toutes les données dans le localStorage
                 localStorage.setItem('id', response.data.id);
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('role', response.data.role);
+                
                 history.push('/');
             } else {  
                 setErrorMessage(response.data.message);  
@@ -41,10 +42,10 @@ function Login() {
             Axios.post('http://localhost:3001/user/login/token',
                 { //Envoie le token d'authentification
                     headers: {
-                        authorization : `Bearer ${localStorage.getItem('token')}`
+                        authorization : `Bearer ${localStorage.getItem('token')}` //Récupération du token
                     },
                     body:{
-                        id: localStorage.getItem('token')
+                        id: localStorage.getItem('token') //On récupère l'id 
                     }
                 }).then((response)=>{
                 if (response.data.loggedIn == true ) {
@@ -75,7 +76,7 @@ function Login() {
                     }}
                 />
             
-                <button onClick={login}>Login</button> 
+                <button onClick={login}>Login</button> {/*au clique on se log*/}
                 {errorMessage}               
             </div>
         </div>

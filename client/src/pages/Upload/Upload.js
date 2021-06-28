@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Upload.css';
- import Axios from 'axios';
+import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 
@@ -10,26 +10,33 @@ function Upload() {
     const [description, setDescription] = useState('');
     const [image, setImage] = useState([]);
 
+
     let history = useHistory();
 
-    const upload =  () => {
+    const upload = () => {
 
         const formData = new FormData();
         formData.append('image', image[0]);
         formData.append('data', JSON.stringify({ //Permet de poster des publi, et est envoyé a la bdd
             title: title,
             description: description,
-            author: localStorage.getItem('username'),
+            author: localStorage.getItem('username'), //On récupère le username
+            id: localStorage.getItem('id'),//récupère l'id
+
+
         }));
         Axios.post(
-            'http://localhost:3001/upload/' ,
-            formData, 
+            'http://localhost:3001/upload/', formData, //On envoie le formdata
+
             {
-                headers : { 
-                    authorization : `Bearer ${localStorage.getItem('token')}`}
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`, //On récupère le token
+
+                }
             },
-            
-        ).then(() => {
+        ).then((response) => {
+            console.log(response);
+
             history.push('/');
         });
     };

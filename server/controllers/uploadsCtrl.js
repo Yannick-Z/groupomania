@@ -2,35 +2,60 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 const querySql = require('../config/querySql');
-
 const unlinkAsync = promisify(fs.unlink);
-
 const db = require('../config/db');
 const dbAsync = require('../models/model');
+
 
 
 module.exports = {
 
 
-    createPost: (req, res) => { //Création de posts  
-        req.body = JSON.parse(req.body.data);
-        const title = req.body.title; //On rentre un titre  
-        const description = req.body.description; //Une description
-        const image = req.file.filename; //Une image
-        const author = req.body.author; //L'auteur de la publication
+    createPost: async (req, res) => {
 
-        db.query(
-            querySql.createPost, [title, description, image, author], //Requete SQL pour la création de posts
-            (err, results) => {
-                console.log(err);
-                res.send(results);
-            }
-        );
+        if (req.body.id != req.token.userId) { //Si l'id different du token alors return false
+            console.log('pas bon');
+            res.send(false);
+        }
+        else {
+            await db.query(
+                querySql.getUserInfo, [req.body.id], //Requete BDD
+                (err, results) => {
+
+                    if (err) throw (err);
+                    console.log(req.body.id, req.token);
+                    const title = req.body.title; //On rentre un titre  
+                    const description = req.body.description; //Une description
+                    const image = req.file.filename; //Une image
+                    const author = results[0].username;
+                    console.log(results.username); //L'auteur de la publication
+
+
+
+                    db.query(
+                        querySql.createPost, [title, description, image, author], //Requete SQL pour la création de posts
+                        (err, results) => {
+                            if (err) throw (err);
+
+                            res.send(results);
+                        });
+
+
+                });
+        }
+
+
+
+
+
+
+
     },
 
 
 
     getPost: async (req, res) => {
+
         db.query(
             querySql.getPost, (err, results) => { //Requete pour récuperer le post
                 if (err) {
@@ -56,14 +81,30 @@ module.exports = {
     },
 
     getUser: (req, res) => {
-        const userName = req.params.token;
-        db.query(
-            querySql.getUser, userName, (err, results) => { //On récupère le user
-                if (err) {
-                    console.log(err);
-                }
-                res.send(results);
-            });
+        try {
+            const username = req.params.token;
+
+            db.query(
+                querySql.login, username, (err, results) => { //Requete SQL (cf query.SQL)
+                    if (err) throw (err);
+
+                    console.log(results[0]);
+                    if (results[0].id != req.token.userId) return res.status(401).send({ 'msg': 'pas le bpon utilisateur' });
+
+                    db.query(
+                        querySql.getUser, username, (err, results) => { //On récupère le user
+                            if (err) throw (err);
+
+                            res.send(results);
+
+                        });
+                });
+        }
+        catch (err) {
+            res.status(401) // Retourne une erreur 401
+                .send({ 'msg': err });
+        }
+
     },
 
 
@@ -76,7 +117,7 @@ module.exports = {
         const comment = req.body.comment;
 
         db.query(
-            'INSERT INTO comment (commentaire, postId, userId) VALUES (?,?,?);', [comment, postId, userId], //On insère les commentaires dans la base de donnée
+            querySql.postComment, [comment, postId, userId], //On insère les commentaires dans la base de donnée
             (err, results) => {
                 if (err) {
                     console.log(err);
@@ -104,7 +145,7 @@ module.exports = {
                     console.log(err);
                 }
                 db.query(
-                    'UPDATE Uploads SET likes = likes + 1 WHERE id = ?', //Actualaise les likes dans la BDD
+                    querySql.updateLikes, //Actualaise les likes dans la BDD
                     postId,
                     () => {
                         res.send(results);
@@ -123,18 +164,18 @@ module.exports = {
 
         try {
             //met à jour le titre
-            await dbAsync.query('UPDATE uploads SET title = ?, description = ? WHERE id = ? ', [title, description, id]);
+            await dbAsync.query(querySql.modifyPostInfo, [title, description, id]); //Requete sql (cf query.SQL)
             console.log(req.image);
             if (req.file) {
                 const image = req.file.filename;
-                const fileExist = await dbAsync.query('SELECT * FROM uploads WHERE id = ?', [id],);
+                const fileExist = await dbAsync.query(querySql.multerSelectModify, [id],);
 
                 if (fileExist !== []) {// TODO verifier le contenu de filexist quand il n'y a pas d'image qui existe
                     console.log('>>>', fileExist[0]);
                     let pathname = fileExist[0].image;
 
                     unlinkAsync(path.join(__dirname, '../images/' + pathname));
-                    await dbAsync.query('UPDATE uploads SET image = ? WHERE id = ?', [image, id],);
+                    await dbAsync.query(querySql.multerImageModify, [image, id],);
                 }
             }
             res.send({ msg: 'ok' });
@@ -142,10 +183,12 @@ module.exports = {
         } catch (error) {
             console.log(error);
 
-            res.status(500).send(error);
+            res.status(500).send(error); //Retourne erreur 500
 
         }
     },
+
+
 
 
     //Supprimer des posts 
@@ -153,16 +196,13 @@ module.exports = {
 
     deletePost: (req, res) => {
         const id = req.params.id;
-
-    
-    
-        db.query('SELECT * FROM uploads WHERE id = ?', [id], (err, results) => { //permet de selectionner les posts dans la base de donnée
+        db.query(querySql.multerSelectModify, [id], (err, results) => { //permet de selectionner les posts dans la base de donnée
             if (err) {
                 console.log(err);
             }
             let pathname = results[0].image;
             unlinkAsync(path.join(__dirname, '../images/' + pathname));
-            db.query('DELETE FROM uploads WHERE id= ?', [id], (err, result) => { //Permt de supprimer les posts dans la base de données
+            db.query(querySql.deleteUploads, [id], (err, result) => { //Permt de supprimer les posts dans la base de données
                 if (err) {
                     console.log(err);
 
@@ -173,3 +213,7 @@ module.exports = {
         });
     }
 };
+
+
+
+

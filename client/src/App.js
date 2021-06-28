@@ -12,7 +12,7 @@ import Contact from './pages/contact/contact';
 
 
 
-
+// Routes directrices pour nviguer vers les diverses pages
 function App() {
     return (
         <>

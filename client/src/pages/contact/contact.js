@@ -22,7 +22,7 @@ export default function ContactUs() {
 /* formulaire de contact */
     return (
         <form onSubmit={sendEmail}> {/* onSubmit associé à la fonction sendEmail */}
-<div className="background">
+<div className="background"> {/*Formulaire HTML pour l'envoie du mail*/}
   <div className="container">
     <div className="screen">
       <div className="screen-header">
