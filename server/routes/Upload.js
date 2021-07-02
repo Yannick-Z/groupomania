@@ -13,9 +13,9 @@ router.post('/byUser/:token', auth, uploadsController.getUser);
 
 router.post('/like', auth, uploadsController.like);
 
-router.put('/update/:id',auth, multer, uploadsController.modifyPost);
+router.put('/update/:id', multer, uploadsController.modifyPost);
 
-router.delete('/delete/:id', multer, uploadsController.deletePost);
+router.delete('/delete/:id',auth, multer, uploadsController.deletePost);
 
 router.post('/comment',  uploadsController.comment);
 

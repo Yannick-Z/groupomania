@@ -18,30 +18,29 @@ module.exports = {
             res.send(false);
         }
         else {
-            await db.query(
-                querySql.getUserInfo, [req.body.id], //Requete BDD
+            // await db.query(
+            // querySql.getUserInfo, [req.body.id], //Requete BDD
+            // (err, results) => {
+
+            //     if (err) throw (err);
+            //     console.log(req.body.id, req.token);
+            const title = req.body.title; //On rentre un titre  
+            const description = req.body.description; //Une description
+            const image = req.file.filename; //Une image
+            const user_id = req.body.id;
+
+
+
+            db.query(
+                querySql.createPost, [title, description, image, user_id], //Requete SQL pour la création de posts
                 (err, results) => {
-
                     if (err) throw (err);
-                    console.log(req.body.id, req.token);
-                    const title = req.body.title; //On rentre un titre  
-                    const description = req.body.description; //Une description
-                    const image = req.file.filename; //Une image
-                    const author = results[0].username;
-                    console.log(results.username); //L'auteur de la publication
 
-
-
-                    db.query(
-                        querySql.createPost, [title, description, image, author], //Requete SQL pour la création de posts
-                        (err, results) => {
-                            if (err) throw (err);
-
-                            res.send(results);
-                        });
-
-
+                    res.send(results);
                 });
+
+
+            // });
         }
 
 
@@ -55,6 +54,7 @@ module.exports = {
 
 
     getPost: async (req, res) => {
+
 
         db.query(
             querySql.getPost, (err, results) => { //Requete pour récuperer le post
@@ -83,6 +83,9 @@ module.exports = {
     getUser: (req, res) => {
         try {
             const username = req.params.token;
+            const user_id = req.body.id;
+           
+
 
             db.query(
                 querySql.login, username, (err, results) => { //Requete SQL (cf query.SQL)
@@ -91,14 +94,15 @@ module.exports = {
                     console.log(results[0]);
                     if (results[0].id != req.token.userId) return res.status(401).send({ 'msg': 'pas le bpon utilisateur' });
 
+                    
                     db.query(
-                        querySql.getUser, username, (err, results) => { //On récupère le user
+                        querySql.getUser, [user_id, username], (err, results) => { //On récupère le user
                             if (err) throw (err);
 
                             res.send(results);
 
                         });
-                });
+                }); 
         }
         catch (err) {
             res.status(401) // Retourne une erreur 401

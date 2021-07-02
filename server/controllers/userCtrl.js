@@ -61,6 +61,8 @@ module.exports = {
 
     deleteUser: (req, res,) => { //Permet de supprimer un user de la page profile
         try {
+
+
             const id = req.body.userToDelete;
             db.query(querySql.getUserInfo, [id], async (err, result) => { //permet de selectionner les posts dans la base de donnée
                 if (err) throw (err);
@@ -74,8 +76,21 @@ module.exports = {
 
 
                 }
+                const id = req.body.id;
+
+                db.query(querySql.deleteComment, [result[0].id] , (err, result) => { //Requete sql (cf query.SQL)
+                    if (err) {
+
+                        throw (err); 
+
+                    } else { 
+                        console.log('result', result);  
+                        res.send(result);
+                    }
+                });
+
                 console.log(result[0].id);
-                db.query(querySql.deleteAccount, [result[0].id], (err, result) => { //Requete sql (cf query.SQL)
+                await db.query(querySql.deleteAccount, [result[0].id], (err, result) => { //Requete sql (cf query.SQL)
                     if (err) {
 
                         throw (err);

@@ -56,7 +56,19 @@ function Home() {
     };
 
     const deleteYourUploads = (id) => {
-        Axios.delete(`http://localhost:3001/upload/delete/${id}`).then(() => {//Permet de supprimer ses publications
+        Axios.delete(`http://localhost:3001/upload/delete/${id}`,
+        { //Permet de supprimer un user
+
+            'data': {
+                'id': localStorage.getItem('id'), //On récupère l'id
+                
+            },
+            'headers': {
+                'authorization': `Bearer ${localStorage.getItem('token')}` //recupère le token
+            }
+        },
+        
+).then(() => {//Permet de supprimer ses publications
             setUploads(
                 uploads.filter((val) => {
                     return val.id !== id;

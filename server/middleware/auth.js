@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
         }
 
         if (!req.body.id) throw ('l\'id n\'est pas défini'); //si pas d'id alors on retourne un message
-
+        
         const token = req.headers.authorization.split(' ')[1];
       
         req.token = jwt.verify(token, process.env.SECRET);

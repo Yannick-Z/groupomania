@@ -31,7 +31,8 @@ function Profile() {
     useEffect(() => {
         Axios.post(`http://localhost:3001/upload/byUser/${localStorage.getItem('username')}`, //On récupère les post via le username
             {
-                id: localStorage.getItem('id')//On récupère l'id
+                id: localStorage.getItem('id'),//On récupère l'id
+                
             },
             {
                 headers: {
@@ -40,19 +41,23 @@ function Profile() {
             },
         ).then((response) => {
             setYourUploads(response.data); //Récupère les données d'un des utilisateurs
+            console.log(response.data);
         });
     }, []);
 
     //Supprimer ses posts
     const deleteYourUploads = (id) => {
-        Axios.delete(`http://localhost:3001/upload/delete/${id}`, //Permet de supprimer ses posts
-            {
+        Axios.delete(`http://localhost:3001/upload/delete/${id}`, //Permet de supprimer ses posts 
+        { //Permet de supprimer un user
 
-
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}` //On récupère le token
-                }
+            'data': {
+                'id': localStorage.getItem('id'), //On récupère l'id
+                
             },
+            'headers': {
+                'authorization': `Bearer ${localStorage.getItem('token')}` //recupère le token
+            }
+        }
         ).then(() => {
             setYourUploads(
                 yourUploads.filter((val) => {
@@ -155,7 +160,7 @@ function Profile() {
                                     }}
                                 />
                             </div>
-                            <div id="value">{val.title} / by @{val.author} </div> {/* Récupère titre et auteur */}
+                            <div id="value">{val.title} / by @{val.username} </div> {/* Récupère titre et auteur */}
                             <div className="description">{val.description}</div>
                         </div>
                         <div className="Engagement">
